@@ -1,4 +1,4 @@
-
+// create base layer
 var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   maxZoom: 18,
@@ -6,23 +6,14 @@ var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/
   accessToken: API_KEY
 });
 
-var baseMaps = {
-  light: light
-};
-
-// var overlayMaps = {
-//   cities: cityLayer
-// };
-
+// create map
 var map = L.map ("map", {
   center: [46.2276, 2.2137],
   zoom: 4,
   layers: [light]
 });
 
-L.control.layers(baseMaps).addTo(map);
-
-// pull all earthquake info from last 7 days
+// pull all earthquake info from last 7 days, assign colors based on magnitude
 var url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson';
 
 var colors = ['#E53935', '#FB8C00', '#FFB300', '#FDD835', '#C0CA33', '#7CB342']
@@ -52,7 +43,7 @@ d3.json (url, (response) => {
     });
 });
 
-// create legend
+// create legend, add to map
 var legend = L.control ({position: 'bottomright'});
 
 legend.onAdd = ((map) => {
