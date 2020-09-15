@@ -22,8 +22,10 @@ var map = L.map ("map", {
 
 L.control.layers(baseMaps).addTo(map);
 
-// pull earthquake info
+// pull all earthquake info from last 7 days
 var url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson';
+
+var colors = ['#E53935', '#FB8C00', '#FFB300', '#FDD835', '#C0CA33', '#7CB342']
 
 d3.json (url, (response) => {
 
@@ -34,12 +36,12 @@ d3.json (url, (response) => {
             
             var magColor = ''
 
-            if (mag > 5) {magColor = '#E53935';}
-            else if (mag > 4) {magColor = '#FB8C00';}
-            else if (mag > 3) {magColor = '#FFB300';}
-            else if (mag > 2) {magColor = '#FDD835';}
-            else if (mag > 1) {magColor = '#C0CA33';}
-            else {magColor = '#7CB342';}
+            if (mag > 5) {magColor = colors[0];}
+            else if (mag > 4) {magColor = colors[1];}
+            else if (mag > 3) {magColor = colors[2];}
+            else if (mag > 2) {magColor = colors[3];}
+            else if (mag > 1) {magColor = colors[4];}
+            else {magColor = colors[5];}
             
             L.circle([coords[1], coords[0]], {
                 radius: Math.pow (mag, 3) * 600,
@@ -47,9 +49,22 @@ d3.json (url, (response) => {
             }).bindPopup (`<strong>magnitude ${mag}</strong><hr>${feature.properties.place}`)
             .addTo(map);
         }
-    })
-})
-    // }).bindPopup ((layer) => {
-    //     layer.feature.properties.place;
-//     }).addTo(map);
-// })
+    });
+});
+
+// create legend
+var legend = L.control ({position: 'bottomright'});
+
+legend.onAdd = ((map) => {
+    var div = L.DomUtil.create ('div', 'info legend');
+
+    labels = ['<strong>Magnitude Legend</strong>'],
+    grades = ['>5', '4-5', '3-4', '2-3', '1-2', '<1'];
+
+    for (var x = 0; x < colors.length; x++) {
+        div.innerHTML += `<i style = "background: ${colors[x]}"></i>${grades[x]}<br>`;
+    }
+    return div;
+});
+
+legend.addTo(map);
