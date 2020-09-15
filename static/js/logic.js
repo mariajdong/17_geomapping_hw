@@ -58,8 +58,9 @@ var legend = L.control ({position: 'bottomright'});
 legend.onAdd = ((map) => {
     var div = L.DomUtil.create ('div', 'info legend');
 
-    labels = ['<strong>Magnitude Legend</strong>'],
     grades = ['>5', '4-5', '3-4', '2-3', '1-2', '<1'];
+
+    div.innerHTML = '<strong>Magnitude</strong><hr>';
 
     for (var x = 0; x < colors.length; x++) {
         div.innerHTML += `<i style = "background: ${colors[x]}"></i>${grades[x]}<br>`;
