@@ -20,7 +20,7 @@ d3.json (eq_url, (response) => {
         else {magColor = colors[5];}
             
         let options = {
-            radius: Math.pow (mag, 2) * 4000,
+            radius: Math.pow (mag, 2) * 5000,
             color: magColor
         }
 
